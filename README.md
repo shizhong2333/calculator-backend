@@ -96,8 +96,8 @@ PORT=8000 FLASK_DEBUG=0 python run.py
 ## 8. 前后端连接方式
 
 1. 启动后端服务，确认 `http://127.0.0.1:5000/api/health` 可访问；
-2. 打开前端项目，在前端配置文件（`frontend/src/app.js` 顶部 `API_BASE` 常量）中
-   将地址修改为后端服务地址；
+2. 前端会自动按当前访问地址选择后端（`frontend/src/app.js` 中的 `resolveApiBase()`：
+   本机回环地址连接本地后端，公网访问连接线上后端），无需手动修改后端地址；
 3. 前端所有计算与历史操作均通过 `fetch` 调用该后端地址。
 
 > 验证分离：停止后端服务后，前端界面仍可交互，但无法得到任何新的计算结果，
@@ -163,7 +163,9 @@ backend/
 │   │   └── history_model.py       # 历史记录 CRUD
 │   └── calculator/                # 表达式解析模块
 │       └── parser.py
+├── data/                          # SQLite 数据目录（首次运行自动创建）
 ├── requirements.txt
+├── Procfile                       # 云平台（Render）启动配置
 ├── run.py                         # 启动入口
 ├── README.md
 └── codestyle.md
